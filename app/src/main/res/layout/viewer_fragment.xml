@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:clickable="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/pic_blue_grid"
+        android:scaleType="centerCrop"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <FrameLayout
+                android:id="@+id/navigate_fragment_indicator_container"
+                android:layout_width="match_parent"
+                android:background="@color/black_alpha12"
+                android:layout_height="match_parent">
+
+                <!--FrameLayout
+                    android:id="@+id/navigate_fragment_indicator_btn_1"
+                    android:layout_width="@dimen/length_32"
+                    android:layout_height="@dimen/length_32"
+                    android:background="@drawable/dr_circle_white_38"
+                    android:clickable="true">
+
+
+                    <ImageView
+                        android:id="@+id/navigate_fragment_indicator_image_1"
+                        android:layout_width="@dimen/length_24"
+                        android:layout_height="@dimen/length_24"
+                        android:layout_gravity="center"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_fiber_manual_record_white_24dp" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/navigate_fragment_indicator_btn_2"
+                    android:layout_width="@dimen/length_32"
+                    android:layout_height="@dimen/length_32"
+                    android:background="@drawable/dr_circle_white_38"
+                    android:layout_gravity="right"
+                    android:clickable="true">
+
+
+                    <ImageView
+                        android:id="@+id/navigate_fragment_indicator_image_2"
+                        android:layout_width="@dimen/length_24"
+                        android:layout_height="@dimen/length_24"
+                        android:layout_gravity="center"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_fiber_manual_record_white_24dp" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/navigate_fragment_indicator_btn_3"
+                    android:layout_width="@dimen/length_32"
+                    android:layout_height="@dimen/length_32"
+                    android:background="@drawable/dr_circle_white_38"
+                    android:layout_gravity="bottom"
+                    android:clickable="true">
+
+
+                    <ImageView
+                        android:id="@+id/navigate_fragment_indicator_image_3"
+                        android:layout_width="@dimen/length_24"
+                        android:layout_height="@dimen/length_24"
+                        android:layout_gravity="center"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_fiber_manual_record_white_24dp" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/navigate_fragment_indicator_btn_4"
+                    android:layout_width="@dimen/length_32"
+                    android:layout_height="@dimen/length_32"
+                    android:background="@drawable/dr_circle_white_38"
+                    android:layout_gravity="right|bottom"
+                    android:clickable="true">
+
+
+                    <ImageView
+                        android:id="@+id/navigate_fragment_indicator_image_4"
+                        android:layout_width="@dimen/length_24"
+                        android:layout_height="@dimen/length_24"
+                        android:layout_gravity="center"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_fiber_manual_record_white_24dp" />
+
+                </FrameLayout-->
+
+            </FrameLayout>
+
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/booking_ll_action"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/length_96"
+            android:background="@color/shadow_tint_color"
+            android:elevation="@dimen/offset_6"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/shadow_View"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/shadow_height"
+                android:background="@drawable/dr_shadow_270"
+                android:visibility="@integer/shadow_visibility" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/font_16"
+                android:orientation="vertical"
+                android:background="@color/white">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        style="@style/Base.TextAppearance.AppCompat.Body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ip: "/>
+                    <TextView
+                        android:id="@+id/viewer_fragment_tv_ip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0.0.0.0"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        style="@style/Base.TextAppearance.AppCompat.Body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="message: "/>
+                    <TextView
+                        android:id="@+id/viewer_fragment_tv_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-- --"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <!--FrameLayout
+                android:id="@+id/navigate_fragment_indicator_btn_3"
+                android:layout_width="@dimen/length_32"
+                android:layout_height="@dimen/length_32"
+                android:layout_gravity="center_vertical"
+                android:background="@color/black_alpha12"
+
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/navigate_fragment_indicator_image_3"
+                    android:layout_width="@dimen/length_24"
+                    android:layout_height="@dimen/length_24"
+                    android:layout_gravity="center"
+                    android:rotation="180"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/pic_finger" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/navigate_fragment_indicator_btn_4"
+                android:layout_width="@dimen/length_32"
+                android:layout_height="@dimen/length_32"
+                android:background="@color/black_alpha12"
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/navigate_fragment_indicator_image_4"
+                    android:layout_width="@dimen/length_24"
+                    android:layout_height="@dimen/length_24"
+                    android:layout_gravity="center"
+                    android:rotation="270"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/pic_finger" />
+            </FrameLayout-->
+
+    </LinearLayout>
+
+</FrameLayout>

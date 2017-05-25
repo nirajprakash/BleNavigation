@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.intugine.coalindiaclientdemo.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_wifi_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wifi Name"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/text_device_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Device Name"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/text_reciever_ip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recieve IP"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edit_wifi_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Wifi Name"
+            android:textSize="14sp" />
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edit_device_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Device Name"
+            android:textSize="14sp" />
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edit_reciever_ip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Reciever IP"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/save_props_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Save charecteristics" />
+
+    <Button
+        android:id="@+id/enable_sending_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Send Data" />
+
+    <TextView
+        android:id="@+id/text_sending_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@android:color/darker_gray"
+        android:gravity="center|bottom"
+        android:padding="8dp"
+        android:text="Data Status"
+        android:textColor="@android:color/background_dark"
+        android:textSize="20sp" />
+
+</LinearLayout>

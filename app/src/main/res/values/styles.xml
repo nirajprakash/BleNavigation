@@ -1,0 +1,35 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/fancy_red_500</item>
+        <item name="colorPrimaryDark">@color/fancy_red_700</item>
+        <item name="colorAccent">@color/pink_500</item>
+    </style>
+
+    <!-- toolbar title -->
+    <style name="App.Base.TextAppearance.Toolbar.Light" parent="Base.TextAppearance.AppCompat.Display4">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">@dimen/abc_text_size_title_material_toolbar</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- text/ button click style -->
+    <style name="App.Button.Borderless.Colored" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:minHeight">@dimen/length_40</item>
+        <item name="android:paddingLeft">@dimen/offset_12</item>
+        <item name="android:paddingRight">@dimen/offset_12</item>
+        <item name="android:paddingTop">@dimen/offset_0</item>
+        <item name="android:paddingBottom">@dimen/offset_0</item>
+    </style>
+
+
+</resources>

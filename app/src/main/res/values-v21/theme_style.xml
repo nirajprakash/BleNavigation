@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- reserve button -->
+    <item name="shadow_visibility" type="integer">2</item>
+    <item name="shadow_height" type="dimen">0dp</item>
+    <item name="shadow_tint_color" type="color">@color/black</item>
+
+</resources>

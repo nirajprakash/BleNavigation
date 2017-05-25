@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/pic_blue_grid"
+        android:scaleType="centerCrop"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/navigate_fragment_indicator_btn_1"
+            android:layout_width="@dimen/length_32"
+            android:layout_height="@dimen/length_32"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/dr_circle_white_38"
+            android:clickable="true">
+
+
+            <ImageView
+                android:id="@+id/navigate_fragment_indicator_image_1"
+                android:layout_width="@dimen/length_24"
+                android:layout_height="@dimen/length_24"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_fiber_manual_record_white_24dp" />
+
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/dr_dashed_line_grey"
+                android:layerType="software"></View>
+
+            <FrameLayout
+                android:id="@+id/navigate_fragment_indicator_container"
+                android:layout_width="match_parent"
+
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:id="@+id/navigate_fragment_pointer"
+                    android:layout_width="@dimen/length_48"
+                    android:layout_height="@dimen/length_48"
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="invisible">
+
+                    <com.wang.avi.AVLoadingIndicatorView
+                        android:id="@+id/navigate_fragment_pointer_ripple"
+                        style="@style/AVLoadingIndicatorView.Large"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible"
+                        app:indicatorColor="@color/red_A100"
+                        app:indicatorName="BallScaleMultipleIndicator" />
+
+                    <ImageView
+                        android:layout_width="@dimen/offset_16"
+                        android:layout_height="@dimen/offset_16"
+                        android:layout_gravity="center"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_lens_black_18dp"
+                        android:tint="@color/fancy_red_500" />
+
+                </FrameLayout>
+
+
+            </FrameLayout>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/navigate_fragment_indicator_btn_2"
+            android:layout_width="@dimen/length_32"
+            android:layout_height="@dimen/length_32"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/dr_circle_white_38"
+
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/navigate_fragment_indicator_image_2"
+                android:layout_width="@dimen/length_24"
+                android:layout_height="@dimen/length_24"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_fiber_manual_record_white_24dp" />
+
+
+        </FrameLayout>
+
+        <!--FrameLayout
+                android:id="@+id/navigate_fragment_indicator_btn_3"
+                android:layout_width="@dimen/length_32"
+                android:layout_height="@dimen/length_32"
+                android:layout_gravity="center_vertical"
+                android:background="@color/black_alpha12"
+
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/navigate_fragment_indicator_image_3"
+                    android:layout_width="@dimen/length_24"
+                    android:layout_height="@dimen/length_24"
+                    android:layout_gravity="center"
+                    android:rotation="180"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/pic_finger" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/navigate_fragment_indicator_btn_4"
+                android:layout_width="@dimen/length_32"
+                android:layout_height="@dimen/length_32"
+                android:background="@color/black_alpha12"
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/navigate_fragment_indicator_image_4"
+                    android:layout_width="@dimen/length_24"
+                    android:layout_height="@dimen/length_24"
+                    android:layout_gravity="center"
+                    android:rotation="270"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/pic_finger" />
+            </FrameLayout-->
+
+    </LinearLayout>
+
+
+</FrameLayout>
+<!--android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".ui.MainActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+
+
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:behavior_overlapTop="80dp"
+        android:background="@drawable/pic_grid"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    </LinearLayout-->
+
+
+
+
+
+    <!--LinearLayout
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:elevation="6dp"
+        android:layout_gravity="bottom|end"
+        android:orientation="vertical"
+        android:background="@color/shadow_tint_color"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/shadow_View"
+            android:visibility="@integer/shadow_visibility"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/shadow_height"
+            android:background="@drawable/dr_shadow_270" />
+
+
+        <include layout="@layout/action_start_stop"
+            android:layout_width="match_parent"
+            android:layout_height="48dp" />
+    </LinearLayout-->
+
+

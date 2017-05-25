@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:minWidth="@dimen/length_200"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/dialog_ll_container_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/offset_2"
+        android:orientation="vertical">
+
+        <TextView
+
+            android:id="@+id/dialog_tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/font_16"
+            android:padding="@dimen/offset_12"
+            android:text="Position"
+            android:background="@drawable/dr_bottom_1dp"
+            android:textColor="@color/grey_800" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dialog_ll_container_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/offset_20">
+
+        <EditText
+            android:id="@+id/dialog_position_tv_x"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/offset_16"
+            android:layout_marginLeft="@dimen/offset_16"
+            android:layout_marginRight="@dimen/offset_16"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="posi x"
+            android:maxLines="1"
+            android:textSize="@dimen/offset_16" />
+
+        <EditText
+
+            android:id="@+id/dialog_position_tv_y"
+            style="@style/Widget.AppCompat.EditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/offset_16"
+            android:layout_marginLeft="@dimen/offset_16"
+            android:layout_marginRight="@dimen/offset_16"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="posi y"
+            android:maxLines="1"
+            android:textSize="@dimen/offset_16" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/offset_48"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/font_32"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            style="@style/App.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@android:string/cancel"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="@dimen/font_12" />
+
+        <Button
+            android:id="@+id/btn_ok"
+            style="@style/App.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@android:string/ok"
+            android:textColor="@color/fancy_teal_500"
+            android:textSize="@dimen/font_12" />
+    </LinearLayout>
+
+
+</LinearLayout>

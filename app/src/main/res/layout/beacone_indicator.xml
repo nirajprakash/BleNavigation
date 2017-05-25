@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@+id/navigate_fragment_indicator_btn"
+    android:layout_width="@dimen/length_32"
+    android:layout_height="@dimen/length_32"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/dr_circle_white_38"
+    android:clickable="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <ImageView
+        android:id="@+id/navigate_fragment_indicator_image"
+        android:layout_width="@dimen/length_24"
+        android:layout_height="@dimen/length_24"
+        android:layout_gravity="center"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_fiber_manual_record_white_24dp" />
+
+</FrameLayout>

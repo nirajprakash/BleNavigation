@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector android:exitFadeDuration="400" android:enterFadeDuration="400" xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/dr_black_38"
+        android:state_pressed="true" />
+
+    <item android:drawable="@android:color/transparent" />
+
+</selector>
