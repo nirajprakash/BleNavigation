@@ -22,24 +22,25 @@ import static com.intugine.ble.beacon.util.LogUtils.makeLogTag;
  * Created by niraj on 23-05-2017.
  */
 
-public class DialogRssiValue extends DialogFragment {
+public class DialogNumberValue extends DialogFragment {
 
-    private static final String TAG = makeLogTag(DialogRssiValue.class);
+    private static final String TAG = makeLogTag(DialogNumberValue.class);
 
-    public static final String B_ARG_RSSI = "count.dialog";
+    public static final String B_ARG_COUNT = "count.dialog";
     public static final String B_ARG_KEY= "dialog.key";
-    private String mRssi ="60";
+    private String mCount ="0";
     private String mPosiY;
     //private EditText vEtComment;
     private int mKey;
     private Button vBtnDialogOk;
     private Button vBtnDialogCancel;
     private EditText vEtCount;
-    private DialogRssiListener mDialogRssiValueListener;
+    private DialogNumberValueListener mDialogRssiValueListener;
     private TextView vTvTitle;
+    private String mStrTitle;
 
-    public static DialogRssiValue newInstance(int key, Bundle bundle) {
-        DialogRssiValue fragment = new DialogRssiValue();
+    public static DialogNumberValue newInstance(int key, Bundle bundle) {
+        DialogNumberValue fragment = new DialogNumberValue();
         Bundle args = new Bundle(bundle);
         args.putInt(B_ARG_KEY, key);
         fragment.setArguments(args);
@@ -50,7 +51,7 @@ public class DialogRssiValue extends DialogFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         //if(vEtComment!=null){
-        outState.putString(B_ARG_RSSI, mRssi);
+        outState.putString(B_ARG_COUNT, mCount);
         //}
 
     }
@@ -58,9 +59,27 @@ public class DialogRssiValue extends DialogFragment {
     public void onRestoreInstanceState(Bundle b) {
 
         Bundle arg = getArguments();
+
+
+
         mKey = getArguments().getInt(B_ARG_KEY);
+        mStrTitle = "setCount";
+        String defaultCount ="0";
+        if(mKey==R.id.menu_action_rssi){
+            mStrTitle = "Initial Rssi (rssi>=40)";
+            defaultCount = "55";
+        }else if(mKey==R.id.menu_action_steps){
+            mStrTitle = "Steps(steps>=10)";
+            defaultCount ="20";
+        }else if(mKey==R.id.menu_action_weight){
+            mStrTitle = "Position weight (1-10)";
+            defaultCount = "5";
+        }
+
         if (b != null) {
-            mRssi = b.getString(B_ARG_RSSI, "3");
+            mCount = b.getString(B_ARG_COUNT, defaultCount);
+        }else {
+            mCount = defaultCount;
         }
     }
 
@@ -99,19 +118,20 @@ public class DialogRssiValue extends DialogFragment {
         //LOGV(TAG, "comments: " + mComments);
         if(savedInstanceState!=null) {
 
-            if (mRssi != null) {
-                vEtCount.setText(mRssi);
+            if (mCount != null) {
+                vEtCount.setText(mCount);
             }
 
         }else {
-            vEtCount.setText(mRssi);
+            vEtCount.setText(mCount);
         }
-        vTvTitle.setText("Initial Rssi");
+
+        vTvTitle.setText(mStrTitle);
 
     }
 
-    public void setDialogRssiValueListener(DialogRssiListener pDialogRssiListener) {
-        this.mDialogRssiValueListener = pDialogRssiListener;
+    public void setDialogNumberValueListener(DialogNumberValueListener pDialogNumberValueListener) {
+        this.mDialogRssiValueListener = pDialogNumberValueListener;
     }
 
     public void initView(View view, Bundle savedInstanceState) {
@@ -142,7 +162,7 @@ public class DialogRssiValue extends DialogFragment {
             String editableStringCount = editableCount.toString();
             if (editableStringCount != null && editableStringCount.length() >= 0) {
                 if (mDialogRssiValueListener!= null) {
-                    mDialogRssiValueListener.onDialogRssiPositiveClick(mKey, Integer.valueOf(editableStringCount));
+                    mDialogRssiValueListener.onDialogNumberValuePositiveClick(mKey, Integer.valueOf(editableStringCount));
                 }
             }
 
@@ -157,9 +177,9 @@ public class DialogRssiValue extends DialogFragment {
 
     }
 
-    public interface DialogRssiListener{
+    public interface DialogNumberValueListener {
 
-        public void onDialogRssiPositiveClick(int key, int count);
+        public void onDialogNumberValuePositiveClick(int key, int count);
         //public void onDialogCountNegativeClick(int key);
     }
 

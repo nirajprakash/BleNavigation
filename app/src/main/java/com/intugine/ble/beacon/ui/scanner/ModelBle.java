@@ -17,6 +17,12 @@ public class ModelBle {
         this.time = timeInMillis;
     }
 
+    public ModelBle(ModelBle pModelBle) {
+        this.bluetoothDevice = pModelBle.bluetoothDevice;
+        this.rssi = pModelBle.rssi;
+        this.time = pModelBle.time;
+    }
+
     @Override
     public boolean equals(Object o) {
         if(this == o){

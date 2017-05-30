@@ -2,6 +2,7 @@ package com.intugine.ble.beacon.ui.viewer;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,8 +13,12 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.intugine.ble.beacon.R;
+import com.intugine.ble.beacon.model.ModelSchedule;
 import com.intugine.ble.beacon.ui.ActivityApp;
 import com.intugine.ble.beacon.ui.base.FragmentBase;
+import com.intugine.ble.beacon.ui.navigatorline.DialogCount;
+import com.intugine.ble.beacon.ui.navigatorline.NavigationIndicatorLine;
+import com.intugine.ble.beacon.ui.navigatorline.WrapperIndicator;
 import com.intugine.ble.beacon.utils.UtilsResource;
 
 import java.util.Arrays;
@@ -30,7 +35,7 @@ import static com.intugine.ble.beacon.util.LogUtils.makeLogTag;
  * Created by niraj on 20-05-2017.
  */
 
-public class FragmentViewer extends FragmentBase {
+public class FragmentViewer extends FragmentBase implements DialogCount.DialogCountListener {
 
     private static final String TAG = makeLogTag(FragmentViewer.class);
     TextView vTvMessage;
@@ -39,6 +44,10 @@ public class FragmentViewer extends FragmentBase {
     private FrameLayout vFlNavigateIndicator;
     private int mWidth;
     private int mHeight;
+    private NavigationIndicatorLine[] mZoneIndicators;
+    private int mZoneIndicatorCount;
+    private int mAreaHeight;
+    private int mAreaWidth;
 
     public static Fragment newInstance(int position, Bundle bundle) {
         FragmentViewer fragment = new FragmentViewer();
@@ -89,6 +98,13 @@ public class FragmentViewer extends FragmentBase {
             String ip = ((ActivityApp) activity).getServerIp();
             vTvIp.setText(ip);
         }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startDialogZoneCount();
+            }
+        }, ModelSchedule.DELAY_UI_UPDATE_SLOW);
     }
 
     @Override
@@ -132,10 +148,53 @@ public class FragmentViewer extends FragmentBase {
     private void updateArea(int measuredWidth, int measuredHeight) {
         int height = UtilsResource.getResourceDimenValue(getContext(), R.dimen.length_48);
         int width = UtilsResource.getResourceDimenValue(getContext(), R.dimen.length_24);
-
+        mAreaWidth = measuredWidth;
+        mAreaHeight = measuredHeight;
         mWidth = measuredWidth - width;
         mHeight = measuredHeight - height;
     }
+
+
+    /* **
+     *             Dialog
+     */
+    private void startDialogZoneCount() {
+        //FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Bundle b = new Bundle();
+        //b.putString(DialogPosition.B_ARG_KEY, String.valueOf(beaconIndicatorKey));
+        DialogCount dialogCount = DialogCount.newInstance(2224, b);
+        dialogCount.setCancelable(false);
+        //dialogNumberPicker.setStyle(android.support.v4.app.DialogFragment.STYLE_NO_TITLE,
+        // R.style.App_DialogFragment);
+        //dialogNumberPicker.setStyle(android.support.v4.app.DialogFragment.STYLE_NO_TITLE,
+        // R.style.App_DialogFragment);
+        dialogCount.show(getFragmentManager(), DialogCount.class.getSimpleName());
+        dialogCount.setDialogCountListener(this);
+    }
+
+
+    @Override
+    public void onDialogCountPositiveClick(int key, int count) {
+        initZoneIndicator(count);
+
+    }
+
+    private void initZoneIndicator(int count) {
+        if (mZoneIndicators == null && count > 1) {
+            mZoneIndicatorCount = count;
+            mZoneIndicators = new NavigationIndicatorLine[count];
+            for (int i = 0; i < count; i++) {
+                mZoneIndicators[i] = new NavigationIndicatorLine(
+                        new WrapperIndicator(getContext(), vFlNavigateIndicator, i + 1),
+                        mAreaWidth / 2, mAreaHeight* i / (count - 1), mAreaWidth, mAreaHeight);
+                //mZoneIndicators[i].mWrapperIndicator.setOnIndicatorClickListener(onIndicatorClickListener);
+            }
+        }
+    }
+
+    /* ************************88
+     *                             Server
+     */
 
     public void onServerMessageReceived(String pMessage) {
         String data = pMessage;

@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.intugine.ble.beacon.R;
 import com.intugine.ble.beacon.ble.BleScanHandler;
@@ -48,7 +49,7 @@ public class FragmentNavigatorLine extends FragmentBase implements BleScanHandle
         DialogWifi.DialogWifiListener,
         WebSocketClientHandler.ServerClientHandlerListener,
         DialogCount.DialogCountListener,
-        WrapperIndicator.onIndicatorClickListener, DialogRssiValue.DialogRssiListener {
+        WrapperIndicator.onIndicatorClickListener, DialogNumberValue.DialogNumberValueListener {
 
     private static final String TAG = makeLogTag(FragmentNavigatorLine.class);
     //List<WrapperIndicatorView> mIndicatorViewlist;
@@ -64,6 +65,8 @@ public class FragmentNavigatorLine extends FragmentBase implements BleScanHandle
     private boolean isShowingBeaconList = false;
     private boolean mIsIndicatorPressed = false;
     private int mIndicatorPosition = 0;
+    private FrameLayout vNavigationLoggerContainer;
+    private TextView vNavigationLoggerTv;
 
     public static Fragment newInstance(int position, Bundle bundle) {
         FragmentNavigatorLine fragment = new FragmentNavigatorLine();
@@ -162,7 +165,11 @@ public class FragmentNavigatorLine extends FragmentBase implements BleScanHandle
             startDialogWifi(123);
             return true;
         }else if(id == R.id.menu_action_rssi){
-            startDialogRssi(234);
+            startDialogValue(id);
+        }else if(id == R.id.menu_action_steps){
+            startDialogValue(id);
+        }else if(id == R.id.menu_action_weight){
+            startDialogValue(id);
         }
         return super.onMenuItemClick(item);
     }
@@ -247,7 +254,7 @@ public class FragmentNavigatorLine extends FragmentBase implements BleScanHandle
                             stopNavigation();
                         }
                     }
-                }, 50);
+                }, ModelSchedule.DELAY_UI_UPDATE_FAST);
 
             }
         });
@@ -279,6 +286,11 @@ public class FragmentNavigatorLine extends FragmentBase implements BleScanHandle
         vRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         vRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         vRecyclerView.setItemViewCacheSize(0);
+
+
+        vNavigationLoggerContainer = (FrameLayout) view.findViewById(R.id.navigate_fragment_logger_container);
+        vNavigationLoggerTv= (TextView) view.findViewById(R.id.navigate_fragment_logger_tv);
+        vNavigationLoggerContainer.setVisibility(View.INVISIBLE);
         initAdapter();
     }
 
@@ -325,6 +337,8 @@ public class FragmentNavigatorLine extends FragmentBase implements BleScanHandle
         LOGW(TAG, "updateEditViews isEditing: " + mIsEditing);
         if (!mIsEditing) {
             vRecyclerView.setVisibility(View.INVISIBLE);
+            vNavigationLoggerContainer.setVisibility(View.VISIBLE);
+
             //mNavigationHandler.vTvLable.setVisibility(View.VISIBLE);
             mNavigationHandler.startPointer();
         } else {
@@ -336,6 +350,8 @@ public class FragmentNavigatorLine extends FragmentBase implements BleScanHandle
     private void showBeaconListView() {
         if (mIsEditing) {
             vRecyclerView.setVisibility(View.VISIBLE);
+            vNavigationLoggerContainer.setVisibility(View.INVISIBLE);
+
         }
     }
 
@@ -417,21 +433,33 @@ public class FragmentNavigatorLine extends FragmentBase implements BleScanHandle
 
 
 
-    private void startDialogRssi(int key) {
+    private void startDialogValue(int key) {
         //FragmentTransaction ft = getFragmentManager().beginTransaction();
         Bundle b = new Bundle();
         //b.putString(DialogPosition.B_ARG_KEY, String.valueOf(beaconIndicatorKey));
-        DialogRssiValue dialogRssiValue = DialogRssiValue.newInstance(key, b);
-        dialogRssiValue.setCancelable(false);
-        dialogRssiValue.show(getFragmentManager(), DialogWifi.class.getSimpleName());
-        dialogRssiValue.setDialogRssiValueListener(this);
+        DialogNumberValue dialogNumberValue = DialogNumberValue.newInstance(key, b);
+        dialogNumberValue.setCancelable(false);
+        dialogNumberValue.show(getFragmentManager(), DialogWifi.class.getSimpleName());
+        dialogNumberValue.setDialogNumberValueListener(this);
     }
 
 
     @Override
-    public void onDialogRssiPositiveClick(int key, int rssi) {
-        if (rssi > 40) {
-            mNavigationHandler.mDistanceFilter.setRSSIInitial(rssi);
+    public void onDialogNumberValuePositiveClick(int key, int value) {
+        if(key==R.id.menu_action_rssi) {
+            if (value >=40) {
+                mNavigationHandler.setRSSIInitials(value);
+            }
+        }else if(key== R.id.menu_action_steps) {
+            if(value>8){
+                mNavigationHandler.setPositionSteps(value);
+            }
+        }else if(key== R.id.menu_action_weight){
+
+            if(value>=1 && value<=10){
+                mNavigationHandler.setCurrentPositionWeight(value);
+            }
+
         }
     }
 
@@ -574,26 +602,28 @@ public class FragmentNavigatorLine extends FragmentBase implements BleScanHandle
                 }
             } else {
                 mCurrentModelBle = modelBle;
-                mNavigationHandler.updatePointerPosition(mCurrentModelBle);
-                /*
+
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mNavigationHandler.updatePointerPosition(mCurrentModelBle);
+                        processBle();
                     }
-                }, 20);
-                */
+                },10);
 
-            }
 
-            Activity activity = getActivity();
-            if (activity instanceof ActivityApp) {
-                if (((ActivityApp) activity).isShowingBeaconList) {
-                }
             }
         }
 
         //updateIndicators(mModelBle);
+    }
+
+    private void processBle() {
+        ModelBle modelBle = new ModelBle(mCurrentModelBle);
+        mNavigationHandler.updatePointerPosition(modelBle);
+        String log = mNavigationHandler.getLoggingText();
+        //LOGI(TAG, "log: "+ log);
+        vNavigationLoggerTv.setText(log);
+
     }
 
 

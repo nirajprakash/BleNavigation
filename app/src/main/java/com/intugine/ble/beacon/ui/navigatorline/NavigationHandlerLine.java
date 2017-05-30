@@ -5,12 +5,15 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.intugine.ble.beacon.R;
-import com.intugine.ble.beacon.navigation.DistanceFilter;
+import com.intugine.ble.beacon.navigation.DistanceFilterLine;
+import com.intugine.ble.beacon.navigation.FilterRatio;
 import com.intugine.ble.beacon.ui.scanner.ModelBle;
+import com.intugine.ble.beacon.util.UtilTextLog;
 import com.intugine.ble.beacon.utils.UtilsResource;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
@@ -23,6 +26,8 @@ import static com.intugine.ble.beacon.util.LogUtils.LOGW;
 
 public class NavigationHandlerLine {
 
+    private boolean mIsProcessing = false;
+
     private final int mOffsetWidth;
     public int mNavigationLength = 200;
     public int mNavigationWidth;
@@ -31,7 +36,7 @@ public class NavigationHandlerLine {
     public FrameLayout vFlNavigate;
     public FrameLayout vPointer;
     public AVLoadingIndicatorView vPointerRipple;
-    DistanceFilter mDistanceFilter;
+    DistanceFilterLine mDistanceFilter;
     private NavigationIndicatorLine[] mIndicators;
     private Context mContext;
     //public TextView vTvLable;
@@ -39,11 +44,18 @@ public class NavigationHandlerLine {
     private int mYPositionPrev = 100;
     private int mIndicatorCount;
 
+    UtilTextLog mUtilTextLog;
+    FilterRatio mFilterRatio;
+    private int mPositionSteps = 10;
+    private int mWeightCurrentPosition=5;
+
 
     public NavigationHandlerLine(Context context) {
         this.mContext = context;
-        mDistanceFilter = new DistanceFilter();
+        mUtilTextLog = new UtilTextLog();
+        mDistanceFilter = new DistanceFilterLine();
         mOffsetWidth = UtilsResource.getResourceDimenValue(mContext, R.dimen.length_24);
+        //mFilterRatio = new FilterRatio(7);
     }
 
     public void initIndicator(int count, WrapperIndicator.onIndicatorClickListener onIndicatorClickListener) {
@@ -107,7 +119,21 @@ public class NavigationHandlerLine {
                 LOGW(TAG, "Added indicator at: " + indicatorI + " |  name: " + modelBleMin.bluetoothDevice.getName());
                 //updateIndicatorColor(mIndicators[indicatorI - 1]);
             }
+            logIndicatorBeacons();
         }
+    }
+
+    private void logIndicatorBeacons() {
+        StringBuilder sb= new StringBuilder();
+        if(mIndicators!=null){
+            for(int i=0;i<mIndicators.length;i++){
+               if(mIndicators[i]!=null && mIndicators[i].mModelBle!=null) {
+                   sb.append(String.valueOf(i+1)+": "+ mIndicators[i].mModelBle.bluetoothDevice.getName()+", ");
+               }
+            }
+        }
+        mUtilTextLog.addText("indicators", sb.toString());
+
     }
 
 
@@ -142,9 +168,20 @@ public class NavigationHandlerLine {
         }
     }
 
+    public String getLoggingText() {
+        return mUtilTextLog.toString();
+    }
+
+
     public void updatePointerPosition(ModelBle modelBle) {
+        if(mIsProcessing){
+            LOGI(TAG, "upadatePointer isprocessing return");
+            return;
+        }
+        mIsProcessing =true;
         boolean b = updateIndicatorBle(modelBle);
         //LOGW(TAG, "Updated Indicator: "+ b);
+        mUtilTextLog.addText("ble", modelBle.bluetoothDevice.getName()+ ", rssi:"+ modelBle.rssi);
 
         boolean isYPositionUpdated = false;
         if (b) {
@@ -165,6 +202,7 @@ public class NavigationHandlerLine {
                 vFlNavigate.invalidate();
             }
         }
+        mIsProcessing = false;
 
     }
 
@@ -172,6 +210,8 @@ public class NavigationHandlerLine {
         for (int i = 0; i < mIndicators.length; i++) {
             if (mIndicators[i].mModelBle != null && mIndicators[i].mModelBle.equals(modelBle)) {
                 boolean b = mDistanceFilter.updateFilter(i + 1, modelBle.rssi);
+                mUtilTextLog.addText("Indicator", String.valueOf(i+1)+ ", updated:"+b);
+
                 if (b) {
                     mIndicators[i].updateModelBle(modelBle);
                     return true;
@@ -191,8 +231,18 @@ public class NavigationHandlerLine {
                 indicatorsids.add(i + 1);
             }
         }
+        double[] distances = mDistanceFilter.updateFilterCurrentDistances(indicatorsids);
+        if(distances!=null) {
+            mUtilTextLog.addText("distance", Arrays.toString(distances));
+        }
         int[] filteresult = mDistanceFilter.getFilterResultMin2(indicatorsids);
         if (filteresult != null) {
+            double [] filterAvg = mDistanceFilter.getFilterAvgs();
+            if(filterAvg!=null){
+                mUtilTextLog.addText("filter", Arrays.toString(filterAvg));
+            }
+            mUtilTextLog.addText("result",filteresult[1]+ ","+filteresult[2]+","+ filteresult[0]);
+
             if (filteresult[1] == filteresult[2]) {
                 mYPosition = mIndicators[filteresult[1] - 1].mPositionY;
             } else {
@@ -200,18 +250,31 @@ public class NavigationHandlerLine {
                 int x = mNavigationLength * (filteresult[1] - 1) / (mIndicatorCount - 1);//mIndicators[filteresult[1]-1].mPositionY;
                 int y = mNavigationLength * (filteresult[2] - 1) / (mIndicatorCount - 1);//mIndicators[filteresult[2]-1].mPositionY;
                 int r = filteresult[0];
+                //r = mFilterRatio.getFilteredRatio(r,filteresult[1],filteresult[2]);
                 int distance = ((y - x) * r) / (100 + r) + x;
                 mYPositionPrev = mYPosition;
-                mYPosition = distance;
+
+                //mYPosition = distance;
                 //mYPosition = distance/5;///10;
-                mYPosition = mYPosition * 3 / 7 + mYPositionPrev * 4 / 7;
+                //mYPosition = distance;
+                mYPosition = (distance * mWeightCurrentPosition) / 10 + (mYPositionPrev * (10-mWeightCurrentPosition)) / 10;
+
+                int diff = mYPosition- mYPositionPrev;
+                if(diff>mPositionSteps){
+                    mYPosition = mYPositionPrev +mPositionSteps;
+                }else if(diff<-mPositionSteps){
+                    mYPosition =mYPositionPrev -mPositionSteps;
+                }
                 LOGW(TAG, "X: " + x + " | Y: " + y + " | distance: " + distance);
+                mUtilTextLog.addText("position","distance: "+distance + ", "+"positionY:"+mYPosition);
                 //mYPosition = distance*10;
             }
             return true;
         }
         return false;
     }
+
+
 
 
     public void startPointer() {
@@ -254,5 +317,21 @@ public class NavigationHandlerLine {
         int y = (mYPosition*100)/mNavigationLength;
         int x = 50;
         return String.valueOf(x)+ ","+ String.valueOf(y);
+    }
+
+    public void setPositionSteps(int positionSteps) {
+        LOGI(TAG,"steps: "+ positionSteps );
+        this.mPositionSteps = positionSteps;
+    }
+
+    public void setCurrentPositionWeight(int currentPositionWeight) {
+
+        LOGI(TAG,"currentWeight: "+ currentPositionWeight);
+        this.mWeightCurrentPosition = currentPositionWeight;
+    }
+
+    public void setRSSIInitials(int rssiInitials) {
+        LOGI(TAG,"rssiInitials: "+ rssiInitials);
+        mDistanceFilter.setRSSIInitial(rssiInitials);
     }
 }

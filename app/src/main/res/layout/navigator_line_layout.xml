@@ -63,6 +63,22 @@
 
             </FrameLayout>
 
+            <FrameLayout
+                android:id="@+id/navigate_fragment_logger_container"
+                android:layout_width="256dp"
+                android:background="@color/black_alpha12"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/offset_12"
+                android:layout_gravity="bottom">
+                <TextView
+                    android:id="@+id/navigate_fragment_logger_tv"
+                    android:layout_width="wrap_content"
+                    android:textSize="@dimen/font_10"
+                    android:textColor="@color/white"
+                    android:layout_height="wrap_content" />
+            </FrameLayout>
+
+
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"

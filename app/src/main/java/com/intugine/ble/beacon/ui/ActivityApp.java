@@ -375,7 +375,7 @@ public class ActivityApp extends ActivityBase implements DataInterface {
             @Override
             public void onPermissionResult(int reqKey, final boolean isAllowed) {
                 LOGW(TAG, "permissionResult: " + reqKey);
-                if (reqKey == KeyManifest.UsesPermission.ACCESS_COARSE_LOCATION) {
+                if (reqKey == KeyManifest.UsesPermission.GPS_1) {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -386,11 +386,11 @@ public class ActivityApp extends ActivityBase implements DataInterface {
             }
         };
 
-        if (checkForPermission(KeyManifest.UsesPermission.ACCESS_COARSE_LOCATION)) {
+        if (checkForPermission(KeyManifest.UsesPermission.GPS_1)) {
             onRequestPermissionResult_ACCESS_COARSE_LOCATION(true);
         } else {
 
-            requestForPermission(KeyManifest.UsesPermission.ACCESS_COARSE_LOCATION, listenerPermissionChange);
+            requestForPermission(KeyManifest.UsesPermission.GPS_1, listenerPermissionChange);
 
         }
     }

@@ -21,4 +21,17 @@
         android:title="rssi"
         app:showAsAction="never"  />
 
+    <item
+        android:id="@+id/menu_action_steps"
+        android:orderInCategory="100"
+        android:title="steps"
+        app:showAsAction="never"  />
+
+    <item
+        android:id="@+id/menu_action_weight"
+        android:orderInCategory="100"
+        android:title="weight"
+        app:showAsAction="never"  />
+
+
 </menu>

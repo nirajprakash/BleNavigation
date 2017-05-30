@@ -3,12 +3,14 @@ package com.intugine.ble.beacon.ui.navigatorline;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.intugine.ble.beacon.R;
 import com.intugine.ble.beacon.utils.UtilsColor;
@@ -28,6 +30,8 @@ public class WrapperIndicator {
 
     private final ViewGroup vParent;
     private final int mPosition;
+    private final View vIndicator;
+    private final TextView vTvNavigate;
     private ImageView vImageNavigate;
     private FrameLayout vBtnIndicator;
 
@@ -38,11 +42,13 @@ public class WrapperIndicator {
     public WrapperIndicator(Context context, ViewGroup parent, int position){
         vParent = parent;
         mPosition = position;
-        View v = LayoutInflater.from(context).inflate(R.layout.navigate_indicator,
+        vIndicator = LayoutInflater.from(context).inflate(R.layout.navigate_indicator,
                 parent, false);
-        vBtnIndicator = (FrameLayout) v.findViewById(R.id.navigate_indicator_btn_fl);
+        vTvNavigate =(TextView) vIndicator.findViewById(R.id.navigate_indicator_tv);
+        vTvNavigate.setText("zone."+position);
+        vBtnIndicator = (FrameLayout) vIndicator.findViewById(R.id.navigate_indicator_btn_fl);
 
-        vImageNavigate = (ImageView) v.findViewById(R.id.navigate_indicator_image);
+        vImageNavigate = (ImageView) vIndicator.findViewById(R.id.navigate_indicator_image);
         Drawable drawable = UtilsResource.getDrawable(context, R.drawable.ic_fiber_manual_record_white_24dp);
         //LOGW(TAG, "else color: ");
         LOGW(TAG, "else color: ");
@@ -61,7 +67,7 @@ public class WrapperIndicator {
             }
         });
         */
-        v.setOnClickListener(new View.OnClickListener() {
+        vIndicator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LOGI(TAG,"action click: "+  String.valueOf(Calendar.getInstance().getTimeInMillis()));
@@ -72,7 +78,7 @@ public class WrapperIndicator {
             }
         });
 
-        v.setOnTouchListener(new View.OnTouchListener() {
+        vIndicator.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -89,7 +95,7 @@ public class WrapperIndicator {
             }
         });
 
-        vParent.addView(v);
+        vParent.addView(vIndicator);
         //mLastUpdateTime = Calendar.getInstance().getTimeInMillis();
 
     }
@@ -125,14 +131,15 @@ public class WrapperIndicator {
 
     public void updateY(int xVal, int yVal, int xMax, int yMax) {
         LOGI(TAG, "position:" + xVal + ", "+ yVal);
-        if(vBtnIndicator!=null){
-            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) vBtnIndicator.getLayoutParams();
+        if(vIndicator!=null){
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) vIndicator.getLayoutParams();
             //Replace the RelativeLayout with your myView parent layout
+            layoutParams.gravity = Gravity.RIGHT;
 
             if(xVal==0|| xVal==xMax){
-                layoutParams.leftMargin = (xVal==0)?xVal:(xVal - mOffset);
+                layoutParams.rightMargin = (xVal==0)?xVal:(xVal - mOffset);
             }else{
-                layoutParams.leftMargin = xVal-mOffset/2;
+                layoutParams.rightMargin = xVal-mOffset/2;
             }
             if(yVal==0|| yVal==yMax){
                 layoutParams.topMargin= (yVal==0)?yVal:(yVal - mOffset);
@@ -140,7 +147,7 @@ public class WrapperIndicator {
                 layoutParams.topMargin = yVal-mOffset/2;
             }
 
-            vBtnIndicator.setLayoutParams(layoutParams);
+            vIndicator.setLayoutParams(layoutParams);
             //vTvLable.setText("| PosiY: " + mYPosition);
             vParent.invalidate();
         }
